@@ -1,9 +1,5 @@
 package pgproto3
 
-import (
-	"encoding/json"
-)
-
 type BindComplete struct {
 	// IsBindComplete string `json:"is_bind_complete" yaml:"is_bind_complete"`
 }
@@ -31,10 +27,10 @@ func (src *BindComplete) Encode(dst []byte) []byte {
 }
 
 // MarshalJSON implements encoding/json.Marshaler.
-func (src BindComplete) MarshalJSON() ([]byte, error) {
-	return json.Marshal(struct {
-		Type string
-	}{
-		Type: "BindComplete",
-	})
-}
+// func (src BindComplete) MarshalJSON() ([]byte, error) {
+// 	return json.Marshal(struct {
+// 		Type string
+// 	}{
+// 		Type: "BindComplete",
+// 	})
+// }

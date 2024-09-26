@@ -2,8 +2,6 @@ package pgproto3
 
 import (
 	"bytes"
-	"encoding/json"
-	"errors"
 
 	"github.com/jackc/pgio"
 )
@@ -54,38 +52,38 @@ func (src *Close) Encode(dst []byte) []byte {
 }
 
 // MarshalJSON implements encoding/json.Marshaler.
-func (src Close) MarshalJSON() ([]byte, error) {
-	return json.Marshal(struct {
-		Type        string
-		Object_Type string
-		Name        string
-	}{
-		Type:        "Close",
-		Object_Type: string(src.Object_Type),
-		Name:        src.Name,
-	})
-}
+// func (src Close) MarshalJSON() ([]byte, error) {
+// 	return json.Marshal(struct {
+// 		Type        string
+// 		Object_Type string
+// 		Name        string
+// 	}{
+// 		Type:        "Close",
+// 		Object_Type: string(src.Object_Type),
+// 		Name:        src.Name,
+// 	})
+// }
 
-// UnmarshalJSON implements encoding/json.Unmarshaler.
-func (dst *Close) UnmarshalJSON(data []byte) error {
-	// Ignore null, like in the main JSON package.
-	if string(data) == "null" {
-		return nil
-	}
+// // UnmarshalJSON implements encoding/json.Unmarshaler.
+// func (dst *Close) UnmarshalJSON(data []byte) error {
+// 	// Ignore null, like in the main JSON package.
+// 	if string(data) == "null" {
+// 		return nil
+// 	}
 
-	var msg struct {
-		Object_Type string
-		Name        string
-	}
-	if err := json.Unmarshal(data, &msg); err != nil {
-		return err
-	}
+// 	var msg struct {
+// 		Object_Type string
+// 		Name        string
+// 	}
+// 	if err := json.Unmarshal(data, &msg); err != nil {
+// 		return err
+// 	}
 
-	if len(msg.Object_Type) != 1 {
-		return errors.New("invalid length for Close.Object_Type")
-	}
+// 	if len(msg.Object_Type) != 1 {
+// 		return errors.New("invalid length for Close.Object_Type")
+// 	}
 
-	dst.Object_Type = byte(msg.Object_Type[0])
-	dst.Name = msg.Name
-	return nil
-}
+// 	dst.Object_Type = byte(msg.Object_Type[0])
+// 	dst.Name = msg.Name
+// 	return nil
+// }

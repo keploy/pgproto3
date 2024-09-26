@@ -2,7 +2,6 @@ package pgproto3
 
 import (
 	"encoding/binary"
-	"encoding/json"
 
 	"github.com/jackc/pgio"
 )
@@ -39,15 +38,15 @@ func (src *BackendKeyData) Encode(dst []byte) []byte {
 	return dst
 }
 
-// MarshalJSON implements encoding/json.Marshaler.
-func (src BackendKeyData) MarshalJSON() ([]byte, error) {
-	return json.Marshal(struct {
-		Type      string
-		ProcessID uint32
-		SecretKey uint32
-	}{
-		Type:      "BackendKeyData",
-		ProcessID: src.ProcessID,
-		SecretKey: src.SecretKey,
-	})
-}
+// // MarshalJSON implements encoding/json.Marshaler.
+// func (src BackendKeyData) MarshalJSON() ([]byte, error) {
+// 	return json.Marshal(struct {
+// 		Type      string
+// 		ProcessID uint32
+// 		SecretKey uint32
+// 	}{
+// 		Type:      "BackendKeyData",
+// 		ProcessID: src.ProcessID,
+// 		SecretKey: src.SecretKey,
+// 	})
+// }

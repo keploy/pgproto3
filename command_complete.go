@@ -2,7 +2,6 @@ package pgproto3
 
 import (
 	"bytes"
-	"encoding/json"
 
 	"github.com/jackc/pgio"
 )
@@ -33,7 +32,6 @@ func (dst *CommandComplete) Decode(src []byte) error {
 
 // Encode encodes src into dst. dst will include the 1 byte message type identifier and the 4 byte message length.
 func (src *CommandComplete) Encode(dst []byte) []byte {
-	//println("CommandComplete.Encode")
 	dst = append(dst, 'C')
 	sp := len(dst)
 	dst = pgio.AppendInt32(dst, -1)
@@ -49,31 +47,31 @@ func (src *CommandComplete) Encode(dst []byte) []byte {
 	return dst
 }
 
-// MarshalJSON implements encoding/json.Marshaler.
-func (src CommandComplete) MarshalJSON() ([]byte, error) {
-	return json.Marshal(struct {
-		Type       string
-		CommandTag string
-	}{
-		Type:       "CommandComplete",
-		CommandTag: string(src.CommandTag),
-	})
-}
+// // MarshalJSON implements encoding/json.Marshaler.
+// func (src CommandComplete) MarshalJSON() ([]byte, error) {
+// 	return json.Marshal(struct {
+// 		Type       string
+// 		CommandTag string
+// 	}{
+// 		Type:       "CommandComplete",
+// 		CommandTag: string(src.CommandTag),
+// 	})
+// }
 
-// UnmarshalJSON implements encoding/json.Unmarshaler.
-func (dst *CommandComplete) UnmarshalJSON(data []byte) error {
-	// Ignore null, like in the main JSON package.
-	if string(data) == "null" {
-		return nil
-	}
+// // UnmarshalJSON implements encoding/json.Unmarshaler.
+// func (dst *CommandComplete) UnmarshalJSON(data []byte) error {
+// 	// Ignore null, like in the main JSON package.
+// 	if string(data) == "null" {
+// 		return nil
+// 	}
 
-	var msg struct {
-		CommandTag string
-	}
-	if err := json.Unmarshal(data, &msg); err != nil {
-		return err
-	}
+// 	var msg struct {
+// 		CommandTag string
+// 	}
+// 	if err := json.Unmarshal(data, &msg); err != nil {
+// 		return err
+// 	}
 
-	dst.CommandTag = []byte(msg.CommandTag)
-	return nil
-}
+// 	dst.CommandTag = []byte(msg.CommandTag)
+// 	return nil
+// }

@@ -3,7 +3,6 @@ package pgproto3
 import (
 	"bytes"
 	"encoding/binary"
-	"encoding/json"
 
 	"github.com/jackc/pgio"
 )
@@ -24,26 +23,26 @@ type FieldDescription struct {
 	Format               int16  `json:"format" yaml:"format"`
 }
 
-// MarshalJSON implements encoding/json.Marshaler.
-func (fd FieldDescription) MarshalJSON() ([]byte, error) {
-	return json.Marshal(struct {
-		Name                 string
-		TableOID             uint32
-		TableAttributeNumber uint16
-		DataTypeOID          uint32
-		DataTypeSize         int16
-		TypeModifier         int32
-		Format               int16
-	}{
-		Name:                 string(fd.Name),
-		TableOID:             fd.TableOID,
-		TableAttributeNumber: fd.TableAttributeNumber,
-		DataTypeOID:          fd.DataTypeOID,
-		DataTypeSize:         fd.DataTypeSize,
-		TypeModifier:         fd.TypeModifier,
-		Format:               fd.Format,
-	})
-}
+// // MarshalJSON implements encoding/json.Marshaler.
+// func (fd FieldDescription) MarshalJSON() ([]byte, error) {
+// 	return json.Marshal(struct {
+// 		Name                 string
+// 		TableOID             uint32
+// 		TableAttributeNumber uint16
+// 		DataTypeOID          uint32
+// 		DataTypeSize         int16
+// 		TypeModifier         int32
+// 		Format               int16
+// 	}{
+// 		Name:                 string(fd.Name),
+// 		TableOID:             fd.TableOID,
+// 		TableAttributeNumber: fd.TableAttributeNumber,
+// 		DataTypeOID:          fd.DataTypeOID,
+// 		DataTypeSize:         fd.DataTypeSize,
+// 		TypeModifier:         fd.TypeModifier,
+// 		Format:               fd.Format,
+// 	})
+// }
 
 type RowDescription struct {
 	Fields []FieldDescription
@@ -132,43 +131,43 @@ func (src *RowDescription) Encode(dst []byte) []byte {
 }
 
 // MarshalJSON implements encoding/json.Marshaler.
-func (src RowDescription) MarshalJSON() ([]byte, error) {
-	return json.Marshal(struct {
-		Type   string
-		Fields []FieldDescription
-	}{
-		Type:   "RowDescription",
-		Fields: src.Fields,
-	})
-}
+// func (src RowDescription) MarshalJSON() ([]byte, error) {
+// 	return json.Marshal(struct {
+// 		Type   string
+// 		Fields []FieldDescription
+// 	}{
+// 		Type:   "RowDescription",
+// 		Fields: src.Fields,
+// 	})
+// }
 
 // UnmarshalJSON implements encoding/json.Unmarshaler.
-func (dst *RowDescription) UnmarshalJSON(data []byte) error {
-	var msg struct {
-		Fields []struct {
-			Name                 string
-			TableOID             uint32
-			TableAttributeNumber uint16
-			DataTypeOID          uint32
-			DataTypeSize         int16
-			TypeModifier         int32
-			Format               int16
-		}
-	}
-	if err := json.Unmarshal(data, &msg); err != nil {
-		return err
-	}
-	dst.Fields = make([]FieldDescription, len(msg.Fields))
-	for n, field := range msg.Fields {
-		dst.Fields[n] = FieldDescription{
-			Name:                 []byte(field.Name),
-			TableOID:             field.TableOID,
-			TableAttributeNumber: field.TableAttributeNumber,
-			DataTypeOID:          field.DataTypeOID,
-			DataTypeSize:         field.DataTypeSize,
-			TypeModifier:         field.TypeModifier,
-			Format:               field.Format,
-		}
-	}
-	return nil
-}
+// func (dst *RowDescription) UnmarshalJSON(data []byte) error {
+// 	var msg struct {
+// 		Fields []struct {
+// 			Name                 string
+// 			TableOID             uint32
+// 			TableAttributeNumber uint16
+// 			DataTypeOID          uint32
+// 			DataTypeSize         int16
+// 			TypeModifier         int32
+// 			Format               int16
+// 		}
+// 	}
+// 	if err := json.Unmarshal(data, &msg); err != nil {
+// 		return err
+// 	}
+// 	dst.Fields = make([]FieldDescription, len(msg.Fields))
+// 	for n, field := range msg.Fields {
+// 		dst.Fields[n] = FieldDescription{
+// 			Name:                 []byte(field.Name),
+// 			TableOID:             field.TableOID,
+// 			TableAttributeNumber: field.TableAttributeNumber,
+// 			DataTypeOID:          field.DataTypeOID,
+// 			DataTypeSize:         field.DataTypeSize,
+// 			TypeModifier:         field.TypeModifier,
+// 			Format:               field.Format,
+// 		}
+// 	}
+// 	return nil
+// }

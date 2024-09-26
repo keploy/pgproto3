@@ -1,9 +1,5 @@
 package pgproto3
 
-import (
-	"encoding/json"
-)
-
 type Flush struct{}
 
 // Frontend identifies this message as sendable by a PostgreSQL frontend.
@@ -26,11 +22,11 @@ func (src *Flush) Encode(dst []byte) []byte {
 	return append(dst, 'H', 0, 0, 0, 4)
 }
 
-// MarshalJSON implements encoding/json.Marshaler.
-func (src Flush) MarshalJSON() ([]byte, error) {
-	return json.Marshal(struct {
-		Type string
-	}{
-		Type: "Flush",
-	})
-}
+// // MarshalJSON implements encoding/json.Marshaler.
+// func (src Flush) MarshalJSON() ([]byte, error) {
+// 	return json.Marshal(struct {
+// 		Type string
+// 	}{
+// 		Type: "Flush",
+// 	})
+// }

@@ -1,9 +1,5 @@
 package pgproto3
 
-import (
-	"encoding/json"
-)
-
 type Sync struct{}
 
 // Frontend identifies this message as sendable by a PostgreSQL frontend.
@@ -28,10 +24,10 @@ func (src *Sync) Encode(dst []byte) []byte {
 }
 
 // MarshalJSON implements encoding/json.Marshaler.
-func (src Sync) MarshalJSON() ([]byte, error) {
-	return json.Marshal(struct {
-		Type string
-	}{
-		Type: "Sync",
-	})
-}
+// func (src Sync) MarshalJSON() ([]byte, error) {
+// 	return json.Marshal(struct {
+// 		Type string
+// 	}{
+// 		Type: "Sync",
+// 	})
+// }

@@ -3,8 +3,6 @@ package pgproto3
 import (
 	"bytes"
 	"encoding/binary"
-	"encoding/json"
-	"errors"
 
 	"github.com/jackc/pgio"
 )
@@ -62,37 +60,37 @@ func (src *CopyInResponse) Encode(dst []byte) []byte {
 	return dst
 }
 
-// MarshalJSON implements encoding/json.Marshaler.
-func (src CopyInResponse) MarshalJSON() ([]byte, error) {
-	return json.Marshal(struct {
-		Type              string
-		ColumnFormatCodes []uint16
-	}{
-		Type:              "CopyInResponse",
-		ColumnFormatCodes: src.ColumnFormatCodes,
-	})
-}
+// // MarshalJSON implements encoding/json.Marshaler.
+// func (src CopyInResponse) MarshalJSON() ([]byte, error) {
+// 	return json.Marshal(struct {
+// 		Type              string
+// 		ColumnFormatCodes []uint16
+// 	}{
+// 		Type:              "CopyInResponse",
+// 		ColumnFormatCodes: src.ColumnFormatCodes,
+// 	})
+// }
 
-// UnmarshalJSON implements encoding/json.Unmarshaler.
-func (dst *CopyInResponse) UnmarshalJSON(data []byte) error {
-	// Ignore null, like in the main JSON package.
-	if string(data) == "null" {
-		return nil
-	}
+// // UnmarshalJSON implements encoding/json.Unmarshaler.
+// func (dst *CopyInResponse) UnmarshalJSON(data []byte) error {
+// 	// Ignore null, like in the main JSON package.
+// 	if string(data) == "null" {
+// 		return nil
+// 	}
 
-	var msg struct {
-		OverallFormat     string
-		ColumnFormatCodes []uint16
-	}
-	if err := json.Unmarshal(data, &msg); err != nil {
-		return err
-	}
+// 	var msg struct {
+// 		OverallFormat     string
+// 		ColumnFormatCodes []uint16
+// 	}
+// 	if err := json.Unmarshal(data, &msg); err != nil {
+// 		return err
+// 	}
 
-	if len(msg.OverallFormat) != 1 {
-		return errors.New("invalid length for CopyInResponse.OverallFormat")
-	}
+// 	if len(msg.OverallFormat) != 1 {
+// 		return errors.New("invalid length for CopyInResponse.OverallFormat")
+// 	}
 
-	dst.OverallFormat = msg.OverallFormat[0]
-	dst.ColumnFormatCodes = msg.ColumnFormatCodes
-	return nil
-}
+// 	dst.OverallFormat = msg.OverallFormat[0]
+// 	dst.ColumnFormatCodes = msg.ColumnFormatCodes
+// 	return nil
+// }

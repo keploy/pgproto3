@@ -2,7 +2,6 @@ package pgproto3
 
 import (
 	"encoding/binary"
-	"encoding/json"
 	"errors"
 
 	"github.com/jackc/pgio"
@@ -12,7 +11,7 @@ const cancelRequestCode = 80877102
 
 type CancelRequest struct {
 	ProcessID uint32 `json:"process_id" yaml:"process_id"`
-	SecretKey uint32  `json:"secret_key" yaml:"secret_key"`
+	SecretKey uint32 `json:"secret_key" yaml:"secret_key"`
 }
 
 // Frontend identifies this message as sendable by a PostgreSQL frontend.
@@ -47,14 +46,14 @@ func (src *CancelRequest) Encode(dst []byte) []byte {
 }
 
 // MarshalJSON implements encoding/json.Marshaler.
-func (src CancelRequest) MarshalJSON() ([]byte, error) {
-	return json.Marshal(struct {
-		Type      string
-		ProcessID uint32
-		SecretKey uint32
-	}{
-		Type:      "CancelRequest",
-		ProcessID: src.ProcessID,
-		SecretKey: src.SecretKey,
-	})
-}
+// func (src CancelRequest) MarshalJSON() ([]byte, error) {
+// 	return json.Marshal(struct {
+// 		Type      string
+// 		ProcessID uint32
+// 		SecretKey uint32
+// 	}{
+// 		Type:      "CancelRequest",
+// 		ProcessID: src.ProcessID,
+// 		SecretKey: src.SecretKey,
+// 	})
+// }

@@ -1,9 +1,6 @@
 package pgproto3
 
 import (
-	"encoding/hex"
-	"encoding/json"
-
 	"github.com/jackc/pgio"
 )
 
@@ -34,31 +31,31 @@ func (src *CopyData) Encode(dst []byte) []byte {
 	return dst
 }
 
-// MarshalJSON implements encoding/json.Marshaler.
-func (src CopyData) MarshalJSON() ([]byte, error) {
-	return json.Marshal(struct {
-		Type string
-		Data string
-	}{
-		Type: "CopyData",
-		Data: hex.EncodeToString(src.Data),
-	})
-}
+// // MarshalJSON implements encoding/json.Marshaler.
+// func (src CopyData) MarshalJSON() ([]byte, error) {
+// 	return json.Marshal(struct {
+// 		Type string
+// 		Data string
+// 	}{
+// 		Type: "CopyData",
+// 		Data: hex.EncodeToString(src.Data),
+// 	})
+// }
 
-// UnmarshalJSON implements encoding/json.Unmarshaler.
-func (dst *CopyData) UnmarshalJSON(data []byte) error {
-	// Ignore null, like in the main JSON package.
-	if string(data) == "null" {
-		return nil
-	}
+// // UnmarshalJSON implements encoding/json.Unmarshaler.
+// func (dst *CopyData) UnmarshalJSON(data []byte) error {
+// 	// Ignore null, like in the main JSON package.
+// 	if string(data) == "null" {
+// 		return nil
+// 	}
 
-	var msg struct {
-		Data string
-	}
-	if err := json.Unmarshal(data, &msg); err != nil {
-		return err
-	}
+// 	var msg struct {
+// 		Data string
+// 	}
+// 	if err := json.Unmarshal(data, &msg); err != nil {
+// 		return err
+// 	}
 
-	dst.Data = []byte(msg.Data)
-	return nil
-}
+// 	dst.Data = []byte(msg.Data)
+// 	return nil
+// }

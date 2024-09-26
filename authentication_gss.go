@@ -2,7 +2,6 @@ package pgproto3
 
 import (
 	"encoding/binary"
-	"encoding/json"
 	"errors"
 
 	"github.com/jackc/pgio"
@@ -36,26 +35,26 @@ func (a *AuthenticationGSS) Encode(dst []byte) []byte {
 	return dst
 }
 
-func (a *AuthenticationGSS) MarshalJSON() ([]byte, error) {
-	return json.Marshal(struct {
-		Type string
-		Data []byte
-	}{
-		Type: "AuthenticationGSS",
-	})
-}
+// func (a *AuthenticationGSS) MarshalJSON() ([]byte, error) {
+// 	return json.Marshal(struct {
+// 		Type string
+// 		Data []byte
+// 	}{
+// 		Type: "AuthenticationGSS",
+// 	})
+// }
 
-func (a *AuthenticationGSS) UnmarshalJSON(data []byte) error {
-	// Ignore null, like in the main JSON package.
-	if string(data) == "null" {
-		return nil
-	}
+// func (a *AuthenticationGSS) UnmarshalJSON(data []byte) error {
+// 	// Ignore null, like in the main JSON package.
+// 	if string(data) == "null" {
+// 		return nil
+// 	}
 
-	var msg struct {
-		Type string
-	}
-	if err := json.Unmarshal(data, &msg); err != nil {
-		return err
-	}
-	return nil
-}
+// 	var msg struct {
+// 		Type string
+// 	}
+// 	if err := json.Unmarshal(data, &msg); err != nil {
+// 		return err
+// 	}
+// 	return nil
+// }
