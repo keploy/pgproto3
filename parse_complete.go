@@ -1,9 +1,5 @@
 package pgproto3
 
-import (
-	"encoding/json"
-)
-
 type ParseComplete struct{}
 
 // Backend identifies this message as sendable by the PostgreSQL backend.
@@ -27,10 +23,10 @@ func (src *ParseComplete) Encode(dst []byte) []byte {
 }
 
 // MarshalJSON implements encoding/json.Marshaler.
-func (src ParseComplete) MarshalJSON() ([]byte, error) {
-	return json.Marshal(struct {
-		Type string
-	}{
-		Type: "ParseComplete",
-	})
-}
+// func (src ParseComplete) MarshalJSON() ([]byte, error) {
+// 	return json.Marshal(struct {
+// 		Type string
+// 	}{
+// 		Type: "ParseComplete",
+// 	})
+// }

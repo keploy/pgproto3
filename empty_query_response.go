@@ -1,9 +1,5 @@
 package pgproto3
 
-import (
-	"encoding/json"
-)
-
 type EmptyQueryResponse struct{}
 
 // Backend identifies this message as sendable by the PostgreSQL backend.
@@ -20,17 +16,17 @@ func (dst *EmptyQueryResponse) Decode(src []byte) error {
 	return nil
 }
 
-// Encode encodes src into dst. dst will include the 1 byte message type identifier and the 4 byte message length.
+// // Encode encodes src into dst. dst will include the 1 byte message type identifier and the 4 byte message length.
 func (src *EmptyQueryResponse) Encode(dst []byte) []byte {
 	//println("EmptyQueryResponse.Encode")
 	return append(dst, 'I', 0, 0, 0, 4)
 }
 
-// MarshalJSON implements encoding/json.Marshaler.
-func (src EmptyQueryResponse) MarshalJSON() ([]byte, error) {
-	return json.Marshal(struct {
-		Type string
-	}{
-		Type: "EmptyQueryResponse",
-	})
-}
+// // MarshalJSON implements encoding/json.Marshaler.
+// func (src EmptyQueryResponse) MarshalJSON() ([]byte, error) {
+// 	return json.Marshal(struct {
+// 		Type string
+// 	}{
+// 		Type: "EmptyQueryResponse",
+// 	})
+// }

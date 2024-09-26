@@ -1,8 +1,6 @@
 package pgproto3
 
 import (
-	"encoding/json"
-
 	"github.com/jackc/pgio"
 )
 
@@ -32,24 +30,24 @@ func (src *SASLResponse) Encode(dst []byte) []byte {
 }
 
 // MarshalJSON implements encoding/json.Marshaler.
-func (src SASLResponse) MarshalJSON() ([]byte, error) {
-	return json.Marshal(struct {
-		Type string
-		Data string
-	}{
-		Type: "SASLResponse",
-		Data: string(src.Data),
-	})
-}
+// func (src SASLResponse) MarshalJSON() ([]byte, error) {
+// 	return json.Marshal(struct {
+// 		Type string
+// 		Data string
+// 	}{
+// 		Type: "SASLResponse",
+// 		Data: string(src.Data),
+// 	})
+// }
 
 // UnmarshalJSON implements encoding/json.Unmarshaler.
-func (dst *SASLResponse) UnmarshalJSON(data []byte) error {
-	var msg struct {
-		Data string
-	}
-	if err := json.Unmarshal(data, &msg); err != nil {
-		return err
-	}
-	dst.Data = []byte(msg.Data)
-	return nil
-}
+// func (dst *SASLResponse) UnmarshalJSON(data []byte) error {
+// 	var msg struct {
+// 		Data string
+// 	}
+// 	if err := json.Unmarshal(data, &msg); err != nil {
+// 		return err
+// 	}
+// 	dst.Data = []byte(msg.Data)
+// 	return nil
+// }

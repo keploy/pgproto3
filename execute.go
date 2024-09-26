@@ -3,7 +3,6 @@ package pgproto3
 import (
 	"bytes"
 	"encoding/binary"
-	"encoding/json"
 
 	"github.com/jackc/pgio"
 )
@@ -54,14 +53,14 @@ func (src *Execute) Encode(dst []byte) []byte {
 }
 
 // MarshalJSON implements encoding/json.Marshaler.
-func (src Execute) MarshalJSON() ([]byte, error) {
-	return json.Marshal(struct {
-		Type    string
-		Portal  string
-		MaxRows uint32
-	}{
-		Type:    "Execute",
-		Portal:  src.Portal,
-		MaxRows: src.MaxRows,
-	})
-}
+// func (src Execute) MarshalJSON() ([]byte, error) {
+// 	return json.Marshal(struct {
+// 		Type    string
+// 		Portal  string
+// 		MaxRows uint32
+// 	}{
+// 		Type:    "Execute",
+// 		Portal:  src.Portal,
+// 		MaxRows: src.MaxRows,
+// 	})
+// }

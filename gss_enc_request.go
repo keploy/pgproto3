@@ -2,7 +2,6 @@ package pgproto3
 
 import (
 	"encoding/binary"
-	"encoding/json"
 	"errors"
 
 	"github.com/jackc/pgio"
@@ -39,13 +38,13 @@ func (src *GSSEncRequest) Encode(dst []byte) []byte {
 	return dst
 }
 
-// MarshalJSON implements encoding/json.Marshaler.
-func (src GSSEncRequest) MarshalJSON() ([]byte, error) {
-	return json.Marshal(struct {
-		Type            string
-		ProtocolVersion uint32
-		Parameters      map[string]string
-	}{
-		Type: "GSSEncRequest",
-	})
-}
+// // MarshalJSON implements encoding/json.Marshaler.
+// func (src GSSEncRequest) MarshalJSON() ([]byte, error) {
+// 	return json.Marshal(struct {
+// 		Type            string
+// 		ProtocolVersion uint32
+// 		Parameters      map[string]string
+// 	}{
+// 		Type: "GSSEncRequest",
+// 	})
+// }

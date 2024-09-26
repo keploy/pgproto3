@@ -3,7 +3,6 @@ package pgproto3
 import (
 	"bytes"
 	"encoding/binary"
-	"encoding/json"
 	"errors"
 	"fmt"
 
@@ -85,14 +84,14 @@ func (src *StartupMessage) Encode(dst []byte) []byte {
 }
 
 // MarshalJSON implements encoding/json.Marshaler.
-func (src StartupMessage) MarshalJSON() ([]byte, error) {
-	return json.Marshal(struct {
-		Type            string
-		ProtocolVersion uint32
-		Parameters      map[string]string
-	}{
-		Type:            "StartupMessage",
-		ProtocolVersion: src.ProtocolVersion,
-		Parameters:      src.Parameters,
-	})
-}
+// func (src StartupMessage) MarshalJSON() ([]byte, error) {
+// 	return json.Marshal(struct {
+// 		Type            string
+// 		ProtocolVersion uint32
+// 		Parameters      map[string]string
+// 	}{
+// 		Type:            "StartupMessage",
+// 		ProtocolVersion: src.ProtocolVersion,
+// 		Parameters:      src.Parameters,
+// 	})
+// }

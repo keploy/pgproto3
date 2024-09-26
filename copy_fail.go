@@ -2,8 +2,6 @@ package pgproto3
 
 import (
 	"bytes"
-	"encoding/json"
-	"fmt"
 
 	"github.com/jackc/pgio"
 )
@@ -25,7 +23,6 @@ func (dst *CopyFail) Decode(src []byte) error {
 	}
 
 	dst.Message = string(src[:idx])
-	fmt.Println("Error message of CopyFail.Decode: ", dst.Message)
 	return nil
 }
 
@@ -45,12 +42,12 @@ func (src *CopyFail) Encode(dst []byte) []byte {
 }
 
 // MarshalJSON implements encoding/json.Marshaler.
-func (src CopyFail) MarshalJSON() ([]byte, error) {
-	return json.Marshal(struct {
-		Type    string
-		Message string
-	}{
-		Type:    "CopyFail",
-		Message: src.Message,
-	})
-}
+// func (src CopyFail) MarshalJSON() ([]byte, error) {
+// 	return json.Marshal(struct {
+// 		Type    string
+// 		Message string
+// 	}{
+// 		Type:    "CopyFail",
+// 		Message: src.Message,
+// 	})
+// }

@@ -2,7 +2,6 @@ package pgproto3
 
 import (
 	"encoding/binary"
-	"encoding/json"
 	"errors"
 
 	"github.com/jackc/pgio"
@@ -44,11 +43,11 @@ func (src *AuthenticationOk) Encode(dst []byte) []byte {
 	return dst
 }
 
-// MarshalJSON implements encoding/json.Marshaler.
-func (src AuthenticationOk) MarshalJSON() ([]byte, error) {
-	return json.Marshal(struct {
-		Type string
-	}{
-		Type: "AuthenticationOK",
-	})
-}
+// // MarshalJSON implements encoding/json.Marshaler.
+// func (src AuthenticationOk) MarshalJSON() ([]byte, error) {
+// 	return json.Marshal(struct {
+// 		Type string
+// 	}{
+// 		Type: "AuthenticationOK",
+// 	})
+// }

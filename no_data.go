@@ -1,9 +1,5 @@
 package pgproto3
 
-import (
-	"encoding/json"
-)
-
 type NoData struct{}
 
 // Backend identifies this message as sendable by the PostgreSQL backend.
@@ -26,11 +22,11 @@ func (src *NoData) Encode(dst []byte) []byte {
 	return append(dst, 'n', 0, 0, 0, 4)
 }
 
-// MarshalJSON implements encoding/json.Marshaler.
-func (src NoData) MarshalJSON() ([]byte, error) {
-	return json.Marshal(struct {
-		Type string
-	}{
-		Type: "NoData",
-	})
-}
+// // MarshalJSON implements encoding/json.Marshaler.
+// func (src NoData) MarshalJSON() ([]byte, error) {
+// 	return json.Marshal(struct {
+// 		Type string
+// 	}{
+// 		Type: "NoData",
+// 	})
+// }

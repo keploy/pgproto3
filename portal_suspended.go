@@ -1,9 +1,5 @@
 package pgproto3
 
-import (
-	"encoding/json"
-)
-
 type PortalSuspended struct{}
 
 // Backend identifies this message as sendable by the PostgreSQL backend.
@@ -24,11 +20,11 @@ func (src *PortalSuspended) Encode(dst []byte) []byte {
 	return append(dst, 's', 0, 0, 0, 4)
 }
 
-// MarshalJSON implements encoding/json.Marshaler.
-func (src PortalSuspended) MarshalJSON() ([]byte, error) {
-	return json.Marshal(struct {
-		Type string
-	}{
-		Type: "PortalSuspended",
-	})
-}
+// // MarshalJSON implements encoding/json.Marshaler.
+// func (src PortalSuspended) MarshalJSON() ([]byte, error) {
+// 	return json.Marshal(struct {
+// 		Type string
+// 	}{
+// 		Type: "PortalSuspended",
+// 	})
+// }

@@ -2,7 +2,6 @@ package pgproto3
 
 import (
 	"encoding/binary"
-	"encoding/json"
 	"errors"
 
 	"github.com/jackc/pgio"
@@ -22,13 +21,13 @@ func (dst *SSLRequest) Decode(src []byte) error {
 	if len(src) < 4 {
 		return errors.New("ssl request too short")
 	}
-	
+
 	requestCode := binary.BigEndian.Uint32(src)
 	dst.IsSSL = true
 	if requestCode != sslRequestNumber {
 		return errors.New("bad ssl request code")
 	}
- 
+
 	return nil
 }
 
@@ -41,12 +40,12 @@ func (src *SSLRequest) Encode(dst []byte) []byte {
 }
 
 // MarshalJSON implements encoding/json.Marshaler.
-func (src SSLRequest) MarshalJSON() ([]byte, error) {
-	return json.Marshal(struct {
-		Type            string
-		ProtocolVersion uint32
-		Parameters      map[string]string
-	}{
-		Type: "SSLRequest",
-	})
-}
+// func (src SSLRequest) MarshalJSON() ([]byte, error) {
+// 	return json.Marshal(struct {
+// 		Type            string
+// 		ProtocolVersion uint32
+// 		Parameters      map[string]string
+// 	}{
+// 		Type: "SSLRequest",
+// 	})
+// }

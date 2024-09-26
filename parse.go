@@ -3,7 +3,6 @@ package pgproto3
 import (
 	"bytes"
 	"encoding/binary"
-	"encoding/json"
 	"regexp"
 	"strings"
 
@@ -44,11 +43,11 @@ func (dst *Parse) Decode(src []byte) error {
 	dst.Query = string(b[:len(b)-1])
 	// println("dst.Query -- ", dst.Query)
 	// Replace newline characters with spaces
-	dst.Query  = strings.ReplaceAll(dst.Query , "\n", " ")
+	dst.Query = strings.ReplaceAll(dst.Query, "\n", " ")
 
 	// Use a regular expression to reduce multiple spaces to a single space
 	re := regexp.MustCompile(`\s+`)
-	dst.Query  = re.ReplaceAllString(dst.Query , " ")
+	dst.Query = re.ReplaceAllString(dst.Query, " ")
 
 	if buf.Len() < 2 {
 		return &invalidMessageFormatErr{messageType: "Parse"}
@@ -91,16 +90,16 @@ func (src *Parse) Encode(dst []byte) []byte {
 
 // MarshalJSON implements encoding/json.Marshaler.
 // to store the data in json format you have to unmarshal it again
-func (src Parse) MarshalJSON() ([]byte, error) {
-	return json.Marshal(struct {
-		Type          string
-		Name          string
-		Query         string
-		ParameterOIDs []uint32
-	}{
-		Type:          "Parse",
-		Name:          src.Name,
-		Query:         src.Query,
-		ParameterOIDs: src.ParameterOIDs,
-	})
-}
+// func (src Parse) MarshalJSON() ([]byte, error) {
+// 	return json.Marshal(struct {
+// 		Type          string
+// 		Name          string
+// 		Query         string
+// 		ParameterOIDs []uint32
+// 	}{
+// 		Type:          "Parse",
+// 		Name:          src.Name,
+// 		Query:         src.Query,
+// 		ParameterOIDs: src.ParameterOIDs,
+// 	})
+// }

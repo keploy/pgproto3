@@ -2,7 +2,6 @@ package pgproto3
 
 import (
 	"bytes"
-	"encoding/json"
 	"errors"
 
 	"github.com/jackc/pgio"
@@ -57,33 +56,33 @@ func (src *SASLInitialResponse) Encode(dst []byte) []byte {
 }
 
 // MarshalJSON implements encoding/json.Marshaler.
-func (src SASLInitialResponse) MarshalJSON() ([]byte, error) {
-	return json.Marshal(struct {
-		Type          string
-		AuthMechanism string
-		Data          string
-	}{
-		Type:          "SASLInitialResponse",
-		AuthMechanism: src.AuthMechanism,
-		Data:          string(src.Data),
-	})
-}
+// func (src SASLInitialResponse) MarshalJSON() ([]byte, error) {
+// 	return json.Marshal(struct {
+// 		Type          string
+// 		AuthMechanism string
+// 		Data          string
+// 	}{
+// 		Type:          "SASLInitialResponse",
+// 		AuthMechanism: src.AuthMechanism,
+// 		Data:          string(src.Data),
+// 	})
+// }
 
 // UnmarshalJSON implements encoding/json.Unmarshaler.
-func (dst *SASLInitialResponse) UnmarshalJSON(data []byte) error {
-	// Ignore null, like in the main JSON package.
-	if string(data) == "null" {
-		return nil
-	}
+// func (dst *SASLInitialResponse) UnmarshalJSON(data []byte) error {
+// 	// Ignore null, like in the main JSON package.
+// 	if string(data) == "null" {
+// 		return nil
+// 	}
 
-	var msg struct {
-		AuthMechanism string
-		Data          string
-	}
-	if err := json.Unmarshal(data, &msg); err != nil {
-		return err
-	}
-	dst.AuthMechanism = msg.AuthMechanism
-	dst.Data = []byte(msg.Data)
-	return nil
-}
+// 	var msg struct {
+// 		AuthMechanism string
+// 		Data          string
+// 	}
+// 	if err := json.Unmarshal(data, &msg); err != nil {
+// 		return err
+// 	}
+// 	dst.AuthMechanism = msg.AuthMechanism
+// 	dst.Data = []byte(msg.Data)
+// 	return nil
+// }

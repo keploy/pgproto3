@@ -3,8 +3,6 @@ package pgproto3
 import (
 	"bytes"
 	"encoding/binary"
-	"encoding/json"
-	"errors"
 
 	"github.com/jackc/pgio"
 )
@@ -68,36 +66,36 @@ func (src *CopyOutResponse) Encode(dst []byte) []byte {
 }
 
 // MarshalJSON implements encoding/json.Marshaler.
-func (src CopyOutResponse) MarshalJSON() ([]byte, error) {
-	return json.Marshal(struct {
-		Type              string
-		ColumnFormatCodes []uint16
-	}{
-		Type:              "CopyOutResponse",
-		ColumnFormatCodes: src.ColumnFormatCodes,
-	})
-}
+// func (src CopyOutResponse) MarshalJSON() ([]byte, error) {
+// 	return json.Marshal(struct {
+// 		Type              string
+// 		ColumnFormatCodes []uint16
+// 	}{
+// 		Type:              "CopyOutResponse",
+// 		ColumnFormatCodes: src.ColumnFormatCodes,
+// 	})
+// }
 
-// UnmarshalJSON implements encoding/json.Unmarshaler.
-func (dst *CopyOutResponse) UnmarshalJSON(data []byte) error {
-	// Ignore null, like in the main JSON package.
-	if string(data) == "null" {
-		return nil
-	}
+// // UnmarshalJSON implements encoding/json.Unmarshaler.
+// func (dst *CopyOutResponse) UnmarshalJSON(data []byte) error {
+// 	// Ignore null, like in the main JSON package.
+// 	if string(data) == "null" {
+// 		return nil
+// 	}
 
-	var msg struct {
-		OverallFormat     string
-		ColumnFormatCodes []uint16
-	}
-	if err := json.Unmarshal(data, &msg); err != nil {
-		return err
-	}
+// 	var msg struct {
+// 		OverallFormat     string
+// 		ColumnFormatCodes []uint16
+// 	}
+// 	if err := json.Unmarshal(data, &msg); err != nil {
+// 		return err
+// 	}
 
-	if len(msg.OverallFormat) != 1 {
-		return errors.New("invalid length for CopyOutResponse.OverallFormat")
-	}
+// 	if len(msg.OverallFormat) != 1 {
+// 		return errors.New("invalid length for CopyOutResponse.OverallFormat")
+// 	}
 
-	dst.OverallFormat = msg.OverallFormat[0]
-	dst.ColumnFormatCodes = msg.ColumnFormatCodes
-	return nil
-}
+// 	dst.OverallFormat = msg.OverallFormat[0]
+// 	dst.ColumnFormatCodes = msg.ColumnFormatCodes
+// 	return nil
+// }

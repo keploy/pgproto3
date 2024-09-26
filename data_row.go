@@ -3,8 +3,6 @@ package pgproto3
 import (
 	"encoding/base64"
 	"encoding/binary"
-	"encoding/hex"
-	"encoding/json"
 	"unicode"
 
 	"github.com/jackc/pgio"
@@ -107,18 +105,16 @@ func (src *DataRow) Encode(dst []byte) []byte {
 	// fmt.Printf("Days difference: %d\n", int(difference))
 	// fmt.Printf("Binary representation: %v\n", buf)
 	if src.RowValues != nil && len(src.RowValues) > 0 {
-		// fmt.Println("SRC ROW VALUES *** * ** * * ** ", src.RowValues)
 		src.Values = stringsToBytesArray(src.RowValues)
 	}
 	// fmt.Println("SRC VALUES", src.Values)
 	dst = pgio.AppendUint16(dst, uint16(len(src.Values)))
 	for _, v := range src.Values {
-		if v == nil || len(v) == 0{
+		if v == nil || len(v) == 0 {
 			dst = pgio.AppendInt32(dst, -1)
 			continue
 		}
-		
-		
+
 		dst = pgio.AppendInt32(dst, int32(len(v)))
 		dst = append(dst, v...)
 	}
@@ -135,7 +131,7 @@ func stringsToBytesArray(strArray []string) [][]byte {
 
 	for i, str := range strArray {
 		if str == "NIL" {
-	
+
 			byteArray[i] = []byte{255, 255, 255, 255}
 			continue
 		}
@@ -165,7 +161,7 @@ func isValidBase64(s string) ([]byte, bool) {
 	if err != nil {
 		return nil, false
 	}
-	
+
 	return val, true
 }
 
@@ -180,58 +176,58 @@ func IsAsciiPrintable(s string) bool {
 }
 
 // MarshalJSON implements encoding/json.Marshaler.
-func (src DataRow) MarshalJSON() ([]byte, error) {
-	formattedValues := make([]map[string]string, len(src.Values))
-	for i, v := range src.Values {
-		if v == nil {
-			continue
-		}
+// func (src DataRow) MarshalJSON() ([]byte, error) {
+// 	formattedValues := make([]map[string]string, len(src.Values))
+// 	for i, v := range src.Values {
+// 		if v == nil {
+// 			continue
+// 		}
 
-		var hasNonPrintable bool
-		for _, b := range v {
-			if b < 32 {
-				hasNonPrintable = true
-				break
-			}
-		}
+// 		var hasNonPrintable bool
+// 		for _, b := range v {
+// 			if b < 32 {
+// 				hasNonPrintable = true
+// 				break
+// 			}
+// 		}
 
-		if hasNonPrintable {
-			formattedValues[i] = map[string]string{"binary": hex.EncodeToString(v)}
-		} else {
-			formattedValues[i] = map[string]string{"text": string(v)}
-		}
-	}
+// 		if hasNonPrintable {
+// 			formattedValues[i] = map[string]string{"binary": hex.EncodeToString(v)}
+// 		} else {
+// 			formattedValues[i] = map[string]string{"text": string(v)}
+// 		}
+// 	}
 
-	return json.Marshal(struct {
-		Type   string
-		Values []map[string]string
-	}{
-		Type:   "DataRow",
-		Values: formattedValues,
-	})
-}
+// 	return json.Marshal(struct {
+// 		Type   string
+// 		Values []map[string]string
+// 	}{
+// 		Type:   "DataRow",
+// 		Values: formattedValues,
+// 	})
+// }
 
-// UnmarshalJSON implements encoding/json.Unmarshaler.
-func (dst *DataRow) UnmarshalJSON(data []byte) error {
-	// Ignore null, like in the main JSON package.
-	if string(data) == "null" {
-		return nil
-	}
+// // UnmarshalJSON implements encoding/json.Unmarshaler.
+// func (dst *DataRow) UnmarshalJSON(data []byte) error {
+// 	// Ignore null, like in the main JSON package.
+// 	if string(data) == "null" {
+// 		return nil
+// 	}
 
-	var msg struct {
-		Values []map[string]string
-	}
-	if err := json.Unmarshal(data, &msg); err != nil {
-		return err
-	}
+// 	var msg struct {
+// 		Values []map[string]string
+// 	}
+// 	if err := json.Unmarshal(data, &msg); err != nil {
+// 		return err
+// 	}
 
-	dst.Values = make([][]byte, len(msg.Values))
-	for n, parameter := range msg.Values {
-		var err error
-		dst.Values[n], err = getValueFromJSON(parameter)
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
+// 	dst.Values = make([][]byte, len(msg.Values))
+// 	for n, parameter := range msg.Values {
+// 		var err error
+// 		dst.Values[n], err = getValueFromJSON(parameter)
+// 		if err != nil {
+// 			return err
+// 		}
+// 	}
+// 	return nil
+// }

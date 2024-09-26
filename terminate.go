@@ -1,9 +1,5 @@
 package pgproto3
 
-import (
-	"encoding/json"
-)
-
 type Terminate struct{}
 
 // Frontend identifies this message as sendable by a PostgreSQL frontend.
@@ -25,11 +21,11 @@ func (src *Terminate) Encode(dst []byte) []byte {
 	return append(dst, 'X', 0, 0, 0, 4)
 }
 
-// MarshalJSON implements encoding/json.Marshaler.
-func (src Terminate) MarshalJSON() ([]byte, error) {
-	return json.Marshal(struct {
-		Type string
-	}{
-		Type: "Terminate",
-	})
-}
+// // MarshalJSON implements encoding/json.Marshaler.
+// func (src Terminate) MarshalJSON() ([]byte, error) {
+// 	return json.Marshal(struct {
+// 		Type string
+// 	}{
+// 		Type: "Terminate",
+// 	})
+// }
