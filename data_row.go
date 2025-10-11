@@ -19,7 +19,7 @@ func (*DataRow) Backend() {}
 // Decode decodes src into dst. src must contain the complete message with the exception of the initial 1 byte message
 // type identifier and 4 byte message length.
 func (dst *DataRow) Decode(src []byte) error {
-	//println("DataRow.Decode")
+	println("DataRow.Decode")
 	if len(src) < 2 {
 		return &invalidMessageFormatErr{messageType: "DataRow"}
 	}
@@ -83,46 +83,31 @@ func (dst *DataRow) Decode(src []byte) error {
 
 // Encode encodes src into dst. dst will include the 1 byte message type identifier and the 4 byte message length.
 func (src *DataRow) Encode(dst []byte) []byte {
-	//println("DataRow.Encode")
+	println("DataRow.Encode wdfasdfasdf")
 	dst = append(dst, 'D')
 	sp := len(dst)
 	dst = pgio.AppendInt32(dst, -1)
-	// src.Values = stringsToBytesArray(src.RowValues)
 
-	// epoch := time.Date(2000, 1, 1, 0, 0, 0, 0, time.UTC)
-
-	// // Given date
-	// givenDate := time.Date(2021, 7, 14, 0, 0, 0, 0, time.UTC)
-
-	// Calculate the difference in days
-	// difference := givenDate.Sub(epoch).Hours() / 24
-
-	// Prepare a byte slice to hold the binary representation
-	// buf := make([]byte, 4)
-	// binary.BigEndian.PutUint32(buf, uint32(difference))
-
-	// // Output the difference in days and the binary representation
-	// fmt.Printf("Days difference: %d\n", int(difference))
-	// fmt.Printf("Binary representation: %v\n", buf)
 	if src.RowValues != nil && len(src.RowValues) > 0 {
 		src.Values = stringsToBytesArray(src.RowValues)
 	}
-	// fmt.Println("SRC VALUES", src.Values)
+
 	dst = pgio.AppendUint16(dst, uint16(len(src.Values)))
+
 	for _, v := range src.Values {
-		if v == nil || len(v) == 0 {
+		// NULL only if v == nil
+		if v == nil {
 			dst = pgio.AppendInt32(dst, -1)
 			continue
 		}
-
+		// Empty string is length 0 (not NULL)
 		dst = pgio.AppendInt32(dst, int32(len(v)))
-		dst = append(dst, v...)
+		if len(v) > 0 {
+			dst = append(dst, v...)
+		}
 	}
 
 	pgio.SetInt32(dst[sp:], int32(len(dst[sp:])))
-
-	// src.RowValues = []string{}
-	// src.Values = [][]byte{}
 	return dst
 }
 
